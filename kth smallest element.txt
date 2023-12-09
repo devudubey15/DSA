@@ -1,0 +1,122 @@
+Given an array arr[] and an integer K where K is smaller than size of array, the task is to find the Kth smallest element in the given array. It is given that all array elements are distinct.
+
+Note :-  l and r denotes the starting and ending index of the array.
+
+Example 1:
+
+Input:
+N = 6
+arr[] = 7 10 4 3 20 15
+K = 3
+L=0 R=5
+
+Output : 7
+Explanation :
+3rd smallest element in the given 
+array is 7.
+Example 2:
+
+Input:
+N = 5
+arr[] = 7 10 4 20 15
+K = 4 L=0 R=4
+Output : 15
+
+Explanation :
+4th smallest element in the given 
+array is 15.
+
+Your Task:
+You don't have to read input or print anything. Your task is to complete the function kthSmallest() which takes the array arr[], integers l and r denoting the starting and ending index of the array and an integer K as input and returns the Kth smallest element.
+ 
+ 
+Expected Time Complexity: O(n)
+Expected Auxiliary Space: O(log(n))
+
+-------------------------------------------------
+Solutions:
+
+
+1st:
+
+
+
+//User function Template for Java
+
+class Solution{
+    public static int kthSmallest(int[] arr, int l, int r, int k) 
+    { 
+        for (int i = 0; i < arr.length - 1; i++) {
+        for (int j = 0; j < arr.length - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+
+    
+    return arr[k - 1];
+    } 
+}
+----------------------------
+
+2nd:
+
+
+class Solution{
+    public static int kthSmallest(int[] arr, int l, int r, int k) 
+    { 
+        Arrays.sort(arr);
+        return arr[k - 1];
+    } 
+}
+
+----------------------------
+
+3rd:
+
+
+
+//User function Template for Java
+
+class Solution {
+    public static int kthSmallest(int[] arr, int l, int r, int k) {
+        if (l <= r) {
+            int pivotIndex = partition(arr, l, r);
+
+            if (pivotIndex == l + k - 1) {
+                return arr[pivotIndex];
+            } else if (pivotIndex > l + k - 1) {
+                return kthSmallest(arr, l, pivotIndex - 1, k);
+            } else {
+                return kthSmallest(arr, pivotIndex + 1, r, k - (pivotIndex - l + 1));
+            }
+        }
+
+        return -1; // Return -1 for invalid input
+    }
+
+    private static int partition(int[] arr, int low, int high) {
+        int pivot = arr[high];
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+                swap(arr, i, j);
+            }
+        }
+
+        swap(arr, i + 1, high);
+        return i + 1;
+    }
+
+    private static void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}
